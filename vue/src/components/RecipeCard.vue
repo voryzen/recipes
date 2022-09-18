@@ -1,17 +1,18 @@
 <template>
     <div>
         <template v-if="recipe && recipe.loading">
-            <b-card no-body v-hover>
-                <b-card-img-lazy style="height: 15vh; object-fit: cover" class="" :src="placeholder_image"
-                                     v-bind:alt="$t('Recipe_Image')" top></b-card-img-lazy>
+            <b-card no-body v-hover :style="{height: `${height}vh`}">
+                <b-card-img-lazy style="height: 40%; object-fit: cover" :style="{height: `${height*0.4}vh`}"
+                                 :src="placeholder_image"
+                                 v-bind:alt="$t('Recipe_Image')" top></b-card-img-lazy>
 
-                 <b-card-body class="p-4">
+                <b-card-body class="p-4">
                     <h6>
                         <b-skeleton width="95%"></b-skeleton>
                     </h6>
 
                     <b-card-text>
-                       <b-skeleton height="12px" :width="(45 + Math.random() * 45).toString() + '%'"></b-skeleton>
+                        <b-skeleton height="12px" :width="(45 + Math.random() * 45).toString() + '%'"></b-skeleton>
                         <b-skeleton height="12px" :width="(20 + Math.random() * 25).toString() + '%'"></b-skeleton>
                         <b-skeleton height="12px" :width="(30 + Math.random() * 35).toString() + '%'"></b-skeleton>
                     </b-card-text>
@@ -19,76 +20,92 @@
             </b-card>
         </template>
         <template v-else>
-            <b-card no-body v-hover v-if="recipe">
+            <b-card no-body v-hover v-if="recipe" :style="{height: `${height}vh`}" >
 
-                <a :href="this.recipe.id !== undefined ? resolveDjangoUrl('view_recipe', this.recipe.id) : null">
-                    <b-card-img-lazy style="height: 15vh; object-fit: cover" class="" :src="recipe_image"
-                                     v-bind:alt="$t('Recipe_Image')" top></b-card-img-lazy>
-                    <div
-                        class="card-img-overlay h-100 d-flex flex-column justify-content-right float-right text-right pt-2 pr-1"
-                        v-if="show_context_menu">
-                        <a>
-                            <recipe-context-menu :recipe="recipe" class="float-right"
-                                                 v-if="recipe !== null"></recipe-context-menu>
-                        </a>
-                    </div>
-                    <div class="card-img-overlay w-50 d-flex flex-column justify-content-left float-left text-left pt-2"
-                         v-if="recipe.working_time !== 0 || recipe.waiting_time !== 0">
-                        <b-badge pill variant="light" class="mt-1 font-weight-normal" v-if="recipe.working_time !== 0">
-                            <i
-                                class="fa fa-clock"></i> {{ working_time }}
-                        </b-badge>
-                        <b-badge pill variant="secondary" class="mt-1 font-weight-normal"
-                                 v-if="recipe.waiting_time !== 0">
-                            <i class="fa fa-pause"></i> {{ waiting_time }}
-                        </b-badge>
-                    </div>
-                </a>
-
-                <b-card-body class="p-4">
-                    <h6>
+                <b-row no-gutters>
+                    <b-col xs="4" sm="4" md="4">
                         <a :href="this.recipe.id !== undefined ? resolveDjangoUrl('view_recipe', this.recipe.id) : null">
-                            <template v-if="recipe !== null">{{ recipe.name }}</template>
-                            <template v-else>{{ meal_plan.title }}</template>
+                            <b-card-img-lazy style="object-fit: cover;" :style="{height: `${height*1}vh`}"
+                                             :src="recipe_image"
+                                             v-bind:alt="$t('Recipe_Image')" ></b-card-img-lazy>
+
+                            <div
+                                class="card-img-overlay w-50 d-flex flex-column justify-content-left float-left text-left pt-2"
+                                v-if="recipe.working_time !== 0 || recipe.waiting_time !== 0">
+                                <b-badge pill variant="light" class="mt-1 font-weight-normal"
+                                         v-if="recipe.working_time !== 0">
+                                    <i
+                                        class="fa fa-clock"></i> {{ working_time }}
+                                </b-badge>
+                                <b-badge pill variant="secondary" class="mt-1 font-weight-normal"
+                                         v-if="recipe.waiting_time !== 0">
+                                    <i class="fa fa-pause"></i> {{ waiting_time }}
+                                </b-badge>
+                            </div>
                         </a>
-                    </h6>
-
-                    <b-card-text style="text-overflow: ellipsis">
-                        <template v-if="recipe !== null">
-                            <recipe-rating :recipe="recipe"></recipe-rating>
-                            <template v-if="recipe.description !== null && recipe.description !== undefined">
-                        <span v-if="recipe.description.length > text_length">
-                            {{ recipe.description.substr(0, text_length) + "\u2026" }}
-                        </span>
-                                <span v-if="recipe.description.length <= text_length">
-                            {{ recipe.description }}
-                        </span>
-                            </template>
-                            <p class="mt-1">
-                                <last-cooked :recipe="recipe"></last-cooked>
-                                <keywords-component :recipe="recipe"
-                                                    style="margin-top: 4px; position: relative; z-index: 3;"></keywords-component>
+                    </b-col>
+                    <b-col xs="8" sm="8" md="8">
+                        <b-card-body class="p-2">
+                            <p class="mb-0" style="font-size: 14px">
+                                <a :href="this.recipe.id !== undefined ? resolveDjangoUrl('view_recipe', this.recipe.id) : null">
+                                    <template v-if="recipe !== null">{{ recipe.name }}</template>
+                                    <template v-else>{{ meal_plan.title }}</template>
+                                </a>
                             </p>
-                            <transition name="fade" mode="in-out">
-                                <div class="row mt-3" v-if="show_detail">
-                                    <div class="col-md-12">
-                                        <h6 class="card-title"><i class="fas fa-pepper-hot"></i> {{ $t("Ingredients") }}
-                                        </h6>
 
-                                        <ingredients-card :steps="recipe.steps" :header="false" :detailed="false"
-                                                          :servings="recipe.servings"/>
-                                    </div>
-                                </div>
-                            </transition>
+                            <b-card-text style="text-overflow: ellipsis">
+                                <template v-if="recipe !== null">
+                                    <recipe-rating :recipe="recipe"></recipe-rating>
+                                    <template v-if="recipe.description !== null && recipe.description !== undefined">
+                                        <small class="text-muted text-sm-left"
+                                               v-if="recipe.description.length > text_length">
+                                            {{ recipe.description.substr(0, text_length) + "\u2026" }}
+                                        </small>
+                                        <small class="text-muted text-sm-left"
+                                               v-if="recipe.description.length <= text_length">
+                                            {{ recipe.description }}
+                                        </small>
 
-                            <b-badge pill variant="info" v-if="!recipe.internal">{{ $t("External") }}</b-badge>
-                        </template>
-                        <template v-else>{{ meal_plan.note }}</template>
-                    </b-card-text>
-                </b-card-body>
+                                        <div
+                                class="card-img-overlay d-flex flex-column justify-content-right float-right text-right pt-2 pr-1"
+                                v-if="show_context_menu">
+                                <a>
+                                    <recipe-context-menu :recipe="recipe" class="float-right"
+                                                         v-if="recipe !== null"></recipe-context-menu>
+                                </a>
+                            </div>
+                                    </template>
+                                    <p class="mt-1">
+                                        <!--                                <last-cooked :recipe="recipe"></last-cooked>-->
+                                        <keywords-component :recipe="recipe"
+                                                            style="margin-top: 4px; position: relative; z-index: 3;"></keywords-component>
+                                    </p>
+                                    <transition name="fade" mode="in-out">
+                                        <div class="row mt-3" v-if="show_detail">
+                                            <div class="col-md-12">
+                                                <h6 class="card-title"><i class="fas fa-pepper-hot"></i>
+                                                    {{ $t("Ingredients") }}
+                                                </h6>
 
-                <b-card-footer v-if="footer_text !== undefined"><i v-bind:class="footer_icon"></i> {{ footer_text }}
-                </b-card-footer>
+                                                <ingredients-card :steps="recipe.steps" :header="false"
+                                                                  :detailed="false"
+                                                                  :servings="recipe.servings"/>
+                                            </div>
+                                        </div>
+                                    </transition>
+
+                                    <b-badge pill variant="info" v-if="!recipe.internal">{{ $t("External") }}</b-badge>
+                                </template>
+                                <template v-else>{{ meal_plan.note }}</template>
+                            </b-card-text>
+                        </b-card-body>
+                    </b-col>
+                </b-row>
+
+
+<!--                <b-card-footer v-if="footer_text !== undefined" style="font-size: 12px"><i-->
+<!--                    v-bind:class="footer_icon"></i> {{ footer_text }}-->
+<!--                </b-card-footer>-->
             </b-card>
         </template>
 
@@ -112,7 +129,7 @@ export default {
     name: "RecipeCard",
     mixins: [ResolveUrlMixin],
     components: {
-        LastCooked,
+        // LastCooked,
         RecipeRating,
         KeywordsComponent,
         "recipe-context-menu": RecipeContextMenu,
@@ -120,6 +137,7 @@ export default {
     },
     props: {
         recipe: Object,
+        height: Number,
         meal_plan: Object,
         footer_text: String,
         footer_icon: String,
@@ -142,7 +160,7 @@ export default {
             if (this.show_detail) {
                 return 200
             } else {
-                return 120
+                return 42
             }
         },
         recipe_image: function () {

@@ -831,8 +831,7 @@
                 <div v-if="recipes.length > 0" class="mt-4">
                     <div class="row">
                         <div class="col col-md-12">
-                            <div
-                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); grid-gap: 0.4rem">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); grid-gap: 0.4rem;">
                                 <template v-if="!searchFiltered()">
                                     <recipe-card
                                         v-bind:key="`mp_${m.id}`"
@@ -843,7 +842,7 @@
                                         footer_icon="far fa-calendar-alt"
                                     ></recipe-card>
                                 </template>
-                                <recipe-card v-for="r in recipes" v-bind:key="r.id" :recipe="r"
+                                <recipe-card v-for="r in recipes" v-bind:key="r.id" :recipe="r" :height="15"
                                              :footer_text="isRecentOrNew(r)[0]"
                                              :footer_icon="isRecentOrNew(r)[1]"></recipe-card>
                             </div>
