@@ -6,7 +6,7 @@ jobs:
   build-container:
     name: Build ${{ matrix.name }} Container
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'TandoorRecipes'
+    if: github.repository_owner == 'voryzen'
     continue-on-error: ${{ matrix.continue-on-error }}
     permissions:
       contents: read
@@ -38,7 +38,7 @@ jobs:
       - name: clone open data plugin repo
         uses: actions/checkout@master
         with:
-          repository: TandoorRecipes/open_data_plugin
+          repository: voryzen/open_data_plugin
           ref: master
           path: ./recipes/plugins/open_data_plugin
 
@@ -85,8 +85,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            vabene1111/recipes
-            ghcr.io/TandoorRecipes/recipes
+            voryzen/recipes
+            ghcr.io/voryzen/recipes
           flavor: |
             latest=false
             suffix=${{ matrix.suffix }}

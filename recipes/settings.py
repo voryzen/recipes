@@ -74,6 +74,20 @@ if CORS_ORIGIN_ALLOW_ALL := os.getenv('CORS_ORIGIN_ALLOW_ALL') is not None:
 else:
     CORS_ALLOW_ALL_ORIGINS = bool(int(os.getenv("CORS_ALLOW_ALL_ORIGINS", True)))
 
+
+# X-CSRFToken: letting the header through when it is used in a CORS request - adamchainz
+# https://github.com/adamchainz/django-cors-headers/issues/15
+if os.getenv('CORS_ALLOW_HEADERS'):
+    CORS_ALLOW_HEADERS = (
+        'x-requested-with',
+        'content-type',
+        'accept',
+        'origin',
+        'authorization
+        'X-CSRFToken'
+    )
+
+
 LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "index"
 ACCOUNT_LOGOUT_REDIRECT_URL = "index"

@@ -8,7 +8,7 @@ on:
 
 jobs:
   CodeQL-Build:
-    if: github.repository_owner == 'TandoorRecipes'
+    if: github.repository_owner == 'voryzen'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
