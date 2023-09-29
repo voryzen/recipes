@@ -78,25 +78,25 @@ else:
 # X-CSRFToken: letting the header through when it is used in a CORS request - adamchainz
 # https://github.com/adamchainz/django-cors-headers/issues/15
 if os.getenv('CORS_ALLOW_HEADERS'):
-    CORS_ALLOW_HEADERS = [
-        'x-requested-with',
-        'content-type',
-        'accept',
-        'origin',
-        'authorization',
-        'X-CSRFToken',
-    ]
     #CORS_ALLOW_HEADERS = [
-    #'accept',
-    #'accept-encoding',
-    #'authorization',
-    #'content-type',
-    #'dnt',
-    #'origin',
-    #'user-agent',
-    #'x-csrftoken',
-    #'x-requested-with',
+    #    'x-requested-with',
+    #    'content-type',
+    #    'accept',
+    #    'origin',
+    #    'authorization',
+    #    'X-CSRFToken',
     #]
+    CORS_ALLOW_HEADERS = [
+        'accept',
+        'accept-encoding',
+        'authorization',
+        'content-type',
+        'dnt',
+        'origin',
+        'user-agent',
+        'x-csrftoken',
+        'x-requested-with',
+    ]
 
 LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "index"
