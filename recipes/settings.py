@@ -83,7 +83,7 @@ if os.getenv('CORS_ALLOW_HEADERS'):
         'content-type',
         'accept',
         'origin',
-        'authorization,
+        'authorization',
         'X-CSRFToken'
     )
 
